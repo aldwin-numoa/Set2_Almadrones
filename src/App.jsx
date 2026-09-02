@@ -1,4 +1,10 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
+import {
+  flexRender,
+  getCoreRowModel,
+  getPaginationRowModel,
+  useReactTable,
+} from "@tanstack/react-table";
 import styles from "./App.module.css";
 
 const BODY_TYPES = ["Electric", "Acoustic", "Bass", "Classical"];
@@ -14,6 +20,8 @@ const emptyForm = {
 };
 
 function App() {
+  const [items, setItems] = useState([]);
+  const [activeId, setActiveId] = useState(null);
   const [form, setForm] = useState(emptyForm);
   const [errors, setErrors] = useState({});
   const [submitted, setSubmitted] = useState(false);
@@ -57,7 +65,18 @@ function App() {
 
     if (!validate()) return;
 
-    // Registry table (Phase 2) will pick this submission up next.
+    const newItem = {
+      id: Date.now(),
+      model: form.model.trim(),
+      bodyType: form.bodyType,
+      brand: form.brand.trim(),
+      stock: Number(form.stock),
+      manufacturer: form.manufacturer.trim(),
+      role: form.role,
+    };
+
+    setItems((current) => [...current, newItem]);
+    setActiveId(newItem.id);
     setForm(emptyForm);
     setErrors({});
     setSubmitted(true);
@@ -65,6 +84,44 @@ function App() {
 
   const errorFor = (name) =>
     errors[name] ? <small className={styles.error}>{errors[name]}</small> : null;
+
+  const columns = useMemo(
+    () => [
+      { accessorKey: "model", header: "Guitar Model" },
+      {
+        accessorKey: "bodyType",
+        header: "Body Type",
+        cell: ({ getValue }) => (
+          <span className={styles["type-badge"]}>{getValue()}</span>
+        ),
+      },
+      { accessorKey: "brand", header: "Brand" },
+      {
+        accessorKey: "stock",
+        header: "Stock",
+        cell: ({ getValue }) => (
+          <span className={getValue() <= 5 ? styles["low-stock"] : ""}>
+            {getValue()}
+          </span>
+        ),
+      },
+      { accessorKey: "manufacturer", header: "Manufacturer" },
+      { accessorKey: "role", header: "Role" },
+    ],
+    []
+  );
+
+  const table = useReactTable({
+    data: items,
+    columns,
+    getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    initialState: {
+      pagination: {
+        pageSize: 4,
+      },
+    },
+  });
 
   return (
     <main className={styles.page}>
@@ -77,6 +134,7 @@ function App() {
         </p>
       </header>
 
+      <section className={styles.layout}>
       <div className={`${styles.card} ${styles["form-card"]}`}>
         <div className={styles["card-heading"]}>
           <div>
@@ -169,10 +227,84 @@ function App() {
           </button>
 
           {submitted && (
-            <div className={styles.success}>Form is valid — registry table lands in the next commit.</div>
+            <div className={styles.success}>Guitar successfully added to the registry.</div>
           )}
         </form>
       </div>
+
+      <div className={styles.card}>
+        <div className={styles["card-heading"]}>
+          <div>
+            <p className={styles["section-label"]}>PHASE 2</p>
+            <h2>Guitar Registry</h2>
+          </div>
+          <span className={styles.count}>{items.length} records</span>
+        </div>
+
+        <div className={styles["table-wrap"]}>
+          <table>
+            <thead>
+              {table.getHeaderGroups().map((headerGroup) => (
+                <tr key={headerGroup.id}>
+                  {headerGroup.headers.map((header) => (
+                    <th key={header.id}>
+                      {flexRender(header.column.columnDef.header, header.getContext())}
+                    </th>
+                  ))}
+                </tr>
+              ))}
+            </thead>
+            <tbody>
+              {table.getRowModel().rows.length ? (
+                table.getRowModel().rows.map((row) => (
+                  <tr
+                    key={row.id}
+                    className={row.original.id === activeId ? styles["selected-row"] : ""}
+                    onClick={() => setActiveId(row.original.id)}
+                  >
+                    {row.getVisibleCells().map((cell) => (
+                      <td key={cell.id}>
+                        {flexRender(cell.column.columnDef.cell, cell.getContext()) ||
+                          cell.getValue()}
+                      </td>
+                    ))}
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan={columns.length} className={styles.empty}>
+                    No guitars registered yet — add one using the form.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+
+        <div className={styles.pagination}>
+          <span>
+            Page {table.getState().pagination.pageIndex + 1} of{" "}
+            {Math.max(table.getPageCount(), 1)}
+          </span>
+          <div>
+            <button
+              className={styles["secondary-btn"]}
+              onClick={() => table.previousPage()}
+              disabled={!table.getCanPreviousPage()}
+            >
+              ← Previous
+            </button>
+            <button
+              className={styles["secondary-btn"]}
+              onClick={() => table.nextPage()}
+              disabled={!table.getCanNextPage()}
+            >
+              Next →
+            </button>
+          </div>
+        </div>
+      </div>
+      </section>
     </main>
   );
 }
