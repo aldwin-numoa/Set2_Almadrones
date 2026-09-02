@@ -491,6 +491,13 @@ tbody tr:last-child td {
   color: var(--text-soft);
 }
 
+.footer {
+  text-align: center;
+  padding-top: 24px;
+  color: var(--text-soft);
+  font-size: 11px;
+}
+
 @media (max-width: 1050px) {
   .layout {
     grid-template-columns: 1fr;

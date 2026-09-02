@@ -384,6 +384,10 @@ function App() {
         </div>
       </div>
       </section>
+
+      <footer className={styles.footer}>
+        Set B • React + Vite • TanStack Table • useState • useEffect
+      </footer>
     </main>
   );
 }
