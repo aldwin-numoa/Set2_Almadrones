@@ -3,23 +3,23 @@
 }
 
 :root {
-  --blue-50: #eff6ff;
-  --blue-100: #dbeafe;
-  --blue-200: #bfdbfe;
-  --blue-400: #60a5fa;
-  --blue-500: #3b82f6;
-  --blue-600: #2563eb;
-  --blue-700: #1d4ed8;
-  --indigo-100: #e0e7ff;
-  --indigo-300: #a5b4fc;
-  --indigo-500: #6366f1;
-  --indigo-600: #4f46e5;
-  --navy-900: #12314f;
-  --text-soft: #5b7a99;
+  --green-50: #f0fdf4;
+  --green-100: #dcfce7;
+  --green-200: #bbf7d0;
+  --green-400: #4ade80;
+  --green-500: #22c55e;
+  --green-600: #16a34a;
+  --green-700: #15803d;
+  --emerald-100: #d1fae5;
+  --emerald-300: #6ee7b7;
+  --emerald-500: #10b981;
+  --emerald-600: #059669;
+  --forest-900: #0f2e1d;
+  --text-soft: #4b7a63;
 
   font-family: Poppins, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  color: var(--navy-900);
-  background: linear-gradient(160deg, #eff6ff 0%, #f0f5ff 45%, #eef2ff 100%);
+  color: var(--forest-900);
+  background: linear-gradient(160deg, #f0fdf4 0%, #f2fdf7 45%, #eefdf3 100%);
   font-synthesis: none;
 }
 
@@ -40,7 +40,7 @@ body {
 
 .eyebrow {
   margin: 0 0 6px;
-  color: var(--blue-600);
+  color: var(--green-600);
   font-size: 11px;
   font-weight: 800;
   letter-spacing: 0.14em;
@@ -69,6 +69,14 @@ button {
   cursor: pointer;
 }
 
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+tbody tr:focus-visible {
+  outline: 2px solid var(--green-500);
+  outline-offset: 2px;
+}
+
 .layout {
   display: grid;
   grid-template-columns: 360px 1fr;
@@ -77,11 +85,17 @@ button {
 }
 
 .card {
-  background: #f8fbff;
-  border: 1px solid var(--blue-100);
+  background: #f7fdf9;
+  border: 1px solid var(--green-100);
   border-radius: 24px;
-  box-shadow: 0 16px 40px rgba(37, 99, 235, 0.08);
+  box-shadow: 0 16px 40px rgba(22, 163, 74, 0.08);
   padding: 24px;
+  transition: box-shadow 0.2s, border-color 0.2s;
+}
+
+.card:hover {
+  border-color: var(--green-200);
+  box-shadow: 0 20px 48px rgba(22, 163, 74, 0.12);
 }
 
 .form-card {
@@ -103,7 +117,7 @@ button {
 
 .section-label {
   margin: 0 0 6px;
-  color: var(--blue-600);
+  color: var(--green-600);
   font-size: 11px;
   font-weight: 800;
   letter-spacing: 0.14em;
@@ -112,13 +126,13 @@ button {
 h2 {
   margin: 0;
   font-size: 21px;
-  color: var(--navy-900);
+  color: var(--forest-900);
 }
 
 .required-note {
   font-size: 12px;
-  color: var(--blue-600);
-  background: var(--blue-100);
+  color: var(--green-600);
+  background: var(--green-100);
   padding: 6px 10px;
   border-radius: 999px;
   font-weight: 600;
@@ -136,25 +150,25 @@ fieldset {
   gap: 7px;
   font-size: 13px;
   font-weight: 600;
-  color: var(--navy-900);
+  color: var(--forest-900);
 }
 
 input:not([type="radio"]):not([type="checkbox"]),
 select {
   width: 100%;
-  border: 1.5px solid var(--blue-100);
+  border: 1.5px solid var(--green-100);
   border-radius: 14px;
   padding: 11px 14px;
   outline: none;
-  background: #f8fbff;
-  color: var(--navy-900);
+  background: #f7fdf9;
+  color: var(--forest-900);
   transition: border-color 0.15s, box-shadow 0.15s;
 }
 
 input:not([type="radio"]):not([type="checkbox"]):focus,
 select:focus {
-  border-color: var(--blue-400);
-  box-shadow: 0 0 0 4px rgba(96, 165, 250, 0.18);
+  border-color: var(--green-400);
+  box-shadow: 0 0 0 4px rgba(74, 222, 128, 0.18);
 }
 
 fieldset {
@@ -177,7 +191,7 @@ legend {
   display: flex;
   align-items: center;
   gap: 7px;
-  border: 1.5px solid var(--blue-100);
+  border: 1.5px solid var(--green-100);
   padding: 9px 14px;
   border-radius: 999px;
   font-weight: 600;
@@ -186,17 +200,17 @@ legend {
 }
 
 .radio-label:has(input:checked) {
-  border-color: var(--blue-500);
-  background: var(--blue-50);
-  color: var(--blue-600);
+  border-color: var(--green-500);
+  background: var(--green-50);
+  color: var(--green-600);
 }
 
 .radio-label input {
-  accent-color: var(--blue-500);
+  accent-color: var(--green-500);
 }
 
 .error {
-  color: var(--blue-700);
+  color: var(--green-700);
   font-weight: 600;
   font-size: 11px;
 }
@@ -204,9 +218,9 @@ legend {
 .success {
   padding: 10px 14px;
   border-radius: 14px;
-  background: #eef2ff;
-  border: 1px solid var(--indigo-300);
-  color: var(--indigo-600);
+  background: #ecfdf5;
+  border: 1px solid var(--emerald-300);
+  color: var(--emerald-600);
   font-size: 12px;
   font-weight: 700;
 }
@@ -217,21 +231,21 @@ legend {
   padding: 12px 16px;
   font-weight: 700;
   margin-top: 3px;
-  background: linear-gradient(135deg, var(--blue-500), var(--indigo-500));
+  background: linear-gradient(135deg, var(--green-500), var(--emerald-500));
   color: white;
-  box-shadow: 0 10px 24px rgba(37, 99, 235, 0.28);
+  box-shadow: 0 10px 24px rgba(22, 163, 74, 0.28);
   transition: transform 0.12s, box-shadow 0.12s;
 }
 
 .primary-btn:hover {
   transform: translateY(-1px);
-  box-shadow: 0 14px 28px rgba(37, 99, 235, 0.36);
+  box-shadow: 0 14px 28px rgba(22, 163, 74, 0.36);
 }
 
 .count {
   font-size: 12px;
-  color: var(--blue-600);
-  background: var(--blue-100);
+  color: var(--green-600);
+  background: var(--green-100);
   padding: 6px 10px;
   border-radius: 999px;
   font-weight: 600;
@@ -260,12 +274,12 @@ legend {
 }
 
 .toggle input {
-  accent-color: var(--blue-500);
+  accent-color: var(--green-500);
 }
 
 .table-wrap {
   overflow-x: auto;
-  border: 1px solid var(--blue-100);
+  border: 1px solid var(--green-100);
   border-radius: 18px;
 }
 
@@ -279,13 +293,13 @@ th,
 td {
   text-align: left;
   padding: 12px 13px;
-  border-bottom: 1px solid var(--blue-100);
+  border-bottom: 1px solid var(--green-100);
   font-size: 12px;
 }
 
 th {
-  background: var(--blue-50);
-  color: var(--blue-600);
+  background: var(--green-50);
+  color: var(--green-600);
   font-size: 10px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -293,16 +307,21 @@ th {
 
 tbody tr {
   cursor: pointer;
-  transition: background 0.12s;
+  transition: background 0.12s, box-shadow 0.12s;
 }
 
 tbody tr:hover {
-  background: var(--blue-50);
+  background: var(--green-50);
 }
 
 .selected-row {
-  background: var(--blue-50);
-  box-shadow: inset 3px 0 0 var(--blue-500);
+  background: var(--green-50);
+  box-shadow: inset 3px 0 0 var(--green-500);
+}
+
+.selected-row td:first-child {
+  font-weight: 700;
+  color: var(--green-700);
 }
 
 tbody tr:last-child td {
@@ -313,14 +332,14 @@ tbody tr:last-child td {
   display: inline-block;
   border-radius: 999px;
   padding: 4px 10px;
-  background: var(--indigo-100);
-  color: var(--indigo-600);
+  background: var(--emerald-100);
+  color: var(--emerald-600);
   font-weight: 700;
 }
 
 .low-stock {
   font-weight: 800;
-  color: var(--blue-600);
+  color: var(--green-600);
 }
 
 .empty {
@@ -345,11 +364,17 @@ tbody tr:last-child td {
 
 .secondary-btn {
   border-radius: 999px;
-  border: 1px solid var(--blue-200);
+  border: 1px solid var(--green-200);
   padding: 12px 16px;
   font-weight: 700;
-  background: #f8fbff;
-  color: var(--blue-600);
+  background: #f7fdf9;
+  color: var(--green-600);
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.secondary-btn:hover:not(:disabled) {
+  background: var(--green-50);
+  border-color: var(--green-400);
 }
 
 .secondary-btn:disabled {
@@ -377,7 +402,7 @@ tbody tr:last-child td {
   display: grid;
   place-items: center;
   border-radius: 24px;
-  background: linear-gradient(135deg, var(--blue-100), var(--indigo-100));
+  background: linear-gradient(135deg, var(--green-100), var(--emerald-100));
   font-size: 58px;
 }
 
@@ -388,7 +413,7 @@ tbody tr:last-child td {
 .profile-main h3 {
   margin: 0 0 5px;
   font-size: 24px;
-  color: var(--navy-900);
+  color: var(--forest-900);
 }
 
 .profile-main p {
@@ -404,7 +429,7 @@ tbody tr:last-child td {
 
 .detail-grid div {
   padding: 11px;
-  background: var(--blue-50);
+  background: var(--green-50);
   border-radius: 14px;
 }
 
@@ -420,7 +445,7 @@ tbody tr:last-child td {
 .detail-grid strong {
   font-size: 12px;
   overflow-wrap: anywhere;
-  color: var(--navy-900);
+  color: var(--forest-900);
 }
 
 .role-badge {
@@ -432,20 +457,20 @@ tbody tr:last-child td {
 }
 
 .role-badge.merchant {
-  background: var(--indigo-100);
-  color: var(--indigo-600);
+  background: var(--emerald-100);
+  color: var(--emerald-600);
 }
 
 .role-badge.consumer {
-  background: var(--blue-100);
-  color: var(--blue-600);
+  background: var(--green-100);
+  color: var(--green-600);
 }
 
 .hook-note {
   margin-top: 20px;
   padding: 11px 14px;
-  border-left: 3px solid var(--blue-400);
-  background: var(--blue-50);
+  border-left: 3px solid var(--green-400);
+  background: var(--green-50);
   color: var(--text-soft);
   font-size: 11px;
   border-radius: 0 12px 12px 0;
