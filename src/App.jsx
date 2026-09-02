@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   flexRender,
   getCoreRowModel,
@@ -22,9 +22,34 @@ const emptyForm = {
 function App() {
   const [items, setItems] = useState([]);
   const [activeId, setActiveId] = useState(null);
+  const [activeItem, setActiveItem] = useState(null);
+  const [showOnlyInStock, setShowOnlyInStock] = useState(false);
+  const [search, setSearch] = useState("");
   const [form, setForm] = useState(emptyForm);
   const [errors, setErrors] = useState({});
   const [submitted, setSubmitted] = useState(false);
+
+  const filteredItems = useMemo(() => {
+    const term = search.trim().toLowerCase();
+
+    return items.filter((item) => {
+      const matchesSearch =
+        !term ||
+        item.model.toLowerCase().includes(term) ||
+        item.brand.toLowerCase().includes(term) ||
+        item.bodyType.toLowerCase().includes(term) ||
+        item.manufacturer.toLowerCase().includes(term);
+
+      const matchesStock = !showOnlyInStock || item.stock > 0;
+
+      return matchesSearch && matchesStock;
+    });
+  }, [items, search, showOnlyInStock]);
+
+  useEffect(() => {
+    const selected = items.find((item) => item.id === activeId);
+    setActiveItem(selected || null);
+  }, [activeId, items]);
 
   const validate = () => {
     const nextErrors = {};
@@ -112,7 +137,7 @@ function App() {
   );
 
   const table = useReactTable({
-    data: items,
+    data: filteredItems,
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
@@ -238,7 +263,24 @@ function App() {
             <p className={styles["section-label"]}>PHASE 2</p>
             <h2>Guitar Registry</h2>
           </div>
-          <span className={styles.count}>{items.length} records</span>
+          <span className={styles.count}>{filteredItems.length} records</span>
+        </div>
+
+        <div className={styles.toolbar}>
+          <input
+            className={styles.search}
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Search model, brand, body type..."
+          />
+          <label className={styles.toggle}>
+            <input
+              type="checkbox"
+              checked={showOnlyInStock}
+              onChange={(e) => setShowOnlyInStock(e.target.checked)}
+            />
+            <span>In-stock only</span>
+          </label>
         </div>
 
         <div className={styles["table-wrap"]}>
@@ -302,6 +344,43 @@ function App() {
               Next →
             </button>
           </div>
+        </div>
+      </div>
+
+      <div className={`${styles.card} ${styles["profile-card"]}`}>
+        <div className={styles["profile-top"]}>
+          <div>
+            <p className={styles["section-label"]}>PHASE 3 • ACTIVE ITEM</p>
+            <h2>Guitar Profile</h2>
+          </div>
+          {activeItem && (
+            <span className={`${styles["role-badge"]} ${styles[activeItem.role.toLowerCase()]}`}>
+              {activeItem.role}
+            </span>
+          )}
+        </div>
+
+        {activeItem ? (
+          <div className={styles["profile-content"]}>
+            <div className={styles["guitar-art"]}>🎸</div>
+            <div className={styles["profile-main"]}>
+              <h3>{activeItem.model}</h3>
+              <p>{activeItem.brand} • {activeItem.bodyType}</p>
+              <div className={styles["detail-grid"]}>
+                <div><span>Stock</span><strong>{activeItem.stock}</strong></div>
+                <div><span>Body Type</span><strong>{activeItem.bodyType}</strong></div>
+                <div><span>Brand</span><strong>{activeItem.brand}</strong></div>
+                <div><span>Manufacturer</span><strong>{activeItem.manufacturer}</strong></div>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <p className={styles["empty-profile"]}>Select a row to view its full details.</p>
+        )}
+
+        <div className={styles["hook-note"]}>
+          <strong>useEffect sync:</strong> The selected row updates the active
+          profile card automatically.
         </div>
       </div>
       </section>
